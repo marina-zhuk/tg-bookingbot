@@ -15,6 +15,7 @@ function registerCallbackHandler(bot) {
     if (data === 'menu_subscriptions') { await ctx.answerCbQuery(); return showSubscriptionTypes(ctx); }
     if (data === 'menu_basic') { await ctx.answerCbQuery(); return showTypePlans(ctx, 'basic'); }
     if (data === 'menu_full') { await ctx.answerCbQuery(); return showTypePlans(ctx, 'full'); }
+    if (data.startsWith('menu_type:')) { await ctx.answerCbQuery(); return showTypePlans(ctx, data.slice(10)); }
     if (data === 'menu_special') { await ctx.answerCbQuery(); return showSpecialOffers(ctx); }
 
     if (data.startsWith('plan_')) { await ctx.answerCbQuery(); return showPlanCard(ctx, data.slice(5)); }

@@ -7,6 +7,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function registerStartHandler(bot) {
   bot.start(async (ctx) => {
+    const clubName = process.env.CLUB_NAME || 'Demo Fitness Club';
     touchVisitor(ctx.from.id, ctx.from.username);
     const user = userService.findByTelegramId(ctx.from.id);
     if (user) {
@@ -17,7 +18,7 @@ function registerStartHandler(bot) {
     ctx.session.step = 'name';
     ctx.session.draft = {};
     await ctx.reply(
-      'Добро пожаловать в спортивный клуб Gravity Sport! 🏋️\n\n' +
+      `Добро пожаловать в ${clubName}! 🏋️\n\n` +
         'Для покупки абонемента нужно зарегистрироваться.\n' +
         'Пожалуйста, введите ваше <b>ФИО</b> (фамилия имя отчество).\n' +
         'Если отчества нет — поставьте прочерк: <i>Иванова Мария —</i>',
@@ -42,7 +43,7 @@ function registerStartHandler(bot) {
       ctx.session.draft.fullName = text;
       ctx.session.step = 'phone';
       return ctx.reply(
-        'Отлично! Теперь введите ваш <b>номер телефона</b> (например: +79991234567):',
+        'Отлично! Теперь введите ваш <b>номер телефона</b> (например: +70000000000):',
         { parse_mode: 'HTML' }
       );
     }
@@ -51,7 +52,7 @@ function registerStartHandler(bot) {
       const phone = text.replace(/[\s\-()]/g, '');
       if (!PHONE_RE.test(phone)) {
         return ctx.reply(
-          'Некорректный формат. Введите номер в формате <b>+79991234567</b> или <b>89991234567</b>:',
+          'Некорректный формат. Введите номер в формате <b>+70000000000</b> или <b>80000000000</b>:',
           { parse_mode: 'HTML' }
         );
       }

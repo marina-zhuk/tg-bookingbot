@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'sports-club-bot',
+      name: 'fitness-club-telegram-mvp',
       script: './src/index.js',
       watch: ['src/', 'config/subscriptions.json'],
       ignore_watch: ['data/', 'node_modules/', 'logs/'],

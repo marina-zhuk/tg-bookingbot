@@ -99,16 +99,31 @@ function toggleActive(id, adminTelegramId, adminName) {
 
 function addSubscription(data, adminTelegramId, adminName) {
   const maxOrder = db.prepare('SELECT MAX(sort_order) as m FROM subscriptions').get().m || 0;
-  const id = data.id || `${data.type_id}_${Date.now()}`;
+  const typeId = data.type_id || data.typeId;
+  const typeName = data.type_name || data.typeName;
+  const typeDesc = data.type_desc || data.typeDesc || '';
+  const durationDisplay = data.duration_display || data.durationDisplay || data.duration;
+  if (!typeId || !typeName || !data.duration || !data.price) {
+    throw new Error('Недостаточно данных для добавления абонемента');
+  }
+
+  const id = data.id || `${typeId}_${Date.now()}`;
   db.prepare(`
     INSERT INTO subscriptions (id, type_id, type_name, type_desc, duration, duration_display, price, badge, sort_order)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
-    id, data.type_id, data.type_name, data.type_desc || '',
-    data.duration, data.duration_display || data.duration,
+    id, typeId, typeName, typeDesc,
+    data.duration, durationDisplay,
     data.price, data.badge || null, maxOrder + 1
   );
-  _logChange(id, adminTelegramId, adminName, 'added', null, JSON.stringify({ ...data, id }));
+  _logChange(id, adminTelegramId, adminName, 'added', null, JSON.stringify({
+    ...data,
+    id,
+    type_id: typeId,
+    type_name: typeName,
+    type_desc: typeDesc,
+    duration_display: durationDisplay,
+  }));
   return id;
 }
 

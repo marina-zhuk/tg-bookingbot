@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/healthz",
+      "dest": "/api/healthz.js"
+    },
+    {
+      "src": "/api/telegram",
+      "dest": "/api/telegram.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/index.html"
+    }
+  ]
+}

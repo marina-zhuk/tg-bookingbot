@@ -6,7 +6,13 @@ db.exec(`CREATE TABLE IF NOT EXISTS sessions (key TEXT PRIMARY KEY, value TEXT)`
 const store = {
   get: (key) => {
     const row = db.prepare('SELECT value FROM sessions WHERE key = ?').get(key);
-    return row ? JSON.parse(row.value) : undefined;
+    if (!row) return undefined;
+    try {
+      return JSON.parse(row.value);
+    } catch {
+      db.prepare('DELETE FROM sessions WHERE key = ?').run(key);
+      return undefined;
+    }
   },
   set: (key, value) => {
     db.prepare('INSERT OR REPLACE INTO sessions (key, value) VALUES (?, ?)').run(

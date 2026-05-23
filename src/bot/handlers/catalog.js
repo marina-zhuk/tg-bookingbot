@@ -4,7 +4,8 @@ const back = (to) => ({ text: '◀️ Назад', callback_data: to });
 const home = () => ({ text: '🏠 Главное меню', callback_data: 'main_menu' });
 
 async function showMainMenu(ctx) {
-  const text = '👋 Привет! Добро пожаловать в Gravity Sport\n\nВыбери, что тебя интересует:';
+  const clubName = process.env.CLUB_NAME || 'Demo Fitness Club';
+  const text = `👋 Привет! Добро пожаловать в ${clubName}\n\nВыбери, что тебя интересует:`;
   const keyboard = {
     inline_keyboard: [
       [{ text: '🎟 Абонементы', callback_data: 'menu_subscriptions' }],
@@ -16,14 +17,12 @@ async function showMainMenu(ctx) {
 }
 
 async function showSubscriptionTypes(ctx) {
-  const text =
-    'Отлично! Выбери тип абонемента:\n' +
-    '💪 Базовый — тренажёрный зал + все групповые программы\n' +
-    '🏊 Полный — всё то же самое + бассейн';
+  const config = subscriptionService.loadConfig();
+  const lines = config.types.map((type) => `${type.name} — ${type.description}`);
+  const text = `Отлично! Выбери тип абонемента:\n${lines.join('\n')}`;
   const keyboard = {
     inline_keyboard: [
-      [{ text: '💪 Базовый', callback_data: 'menu_basic' }],
-      [{ text: '🏊 Полный', callback_data: 'menu_full' }],
+      ...config.types.map((type) => [{ text: type.name, callback_data: `menu_type:${type.id}` }]),
       [back('main_menu'), home()],
     ],
   };
@@ -83,7 +82,7 @@ async function showPlanCard(ctx, planId) {
   const keyboard = {
     inline_keyboard: [
       [{ text: `✅ Выбрать — ${price}`, callback_data: `buy_${foundPlan.id}` }],
-      [back(`menu_${foundType.id}`), home()],
+      [back(`menu_type:${foundType.id}`), home()],
     ],
   };
   return editOrReply(ctx, text, keyboard);
@@ -91,10 +90,11 @@ async function showPlanCard(ctx, planId) {
 
 async function showSpecialOffers(ctx) {
   const config = subscriptionService.loadConfig();
+  const clubName = process.env.CLUB_NAME || 'Demo Fitness Club';
   const { offers } = config.special;
   const phone = process.env.CLUB_PHONE || 'администратора клуба';
 
-  let text = '⭐ Специальные предложения Gravity Sport\n';
+  let text = `⭐ Специальные предложения ${clubName}\n`;
   for (const offer of offers) {
     const price = subscriptionService.formatPrice(offer.price);
     text += `\n${offer.name} — ${price}\n${offer.description}\n`;

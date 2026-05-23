@@ -32,7 +32,12 @@ function parsePriceRubles(text) {
 }
 
 function slugify(text) {
-  return `type_${Date.now()}`;
+  const base = text
+    .toLowerCase()
+    .replace(/[^a-z0-9а-яё]+/gi, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 32);
+  return `${base || 'type'}_${Date.now()}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -259,7 +264,7 @@ function registerAdminSubscriptionsHandler(bot) {
       if (!sub) return ctx.reply('Абонемент не найден.');
       return editOrReply(
         ctx,
-        `🗑 Удалить абонемент?\n\n<b>${sub.type_name} — ${sub.duration}</b>\n` +
+        `🗑 Удалить абонемент?\n\n<b>${escapeHtml(sub.type_name)} — ${escapeHtml(sub.duration)}</b>\n` +
         `💰 ${svc.formatPrice(sub.price)}\n\n<b>Это действие необратимо!</b>`,
         {
           inline_keyboard: [
@@ -351,7 +356,7 @@ function registerAdminSubscriptionsHandler(bot) {
       const o = svc.findSpecialOfferById(id);
       if (!o) return ctx.reply('Предложение не найдено.');
       return editOrReply(ctx,
-        `🗑 Удалить спецпредложение?\n\n<b>${o.name}</b>\n💰 ${svc.formatPrice(o.price)}\n\n<b>Это действие необратимо!</b>`,
+        `🗑 Удалить спецпредложение?\n\n<b>${escapeHtml(o.name)}</b>\n💰 ${svc.formatPrice(o.price)}\n\n<b>Это действие необратимо!</b>`,
         { inline_keyboard: [
           [{ text: '✅ Да, удалить', callback_data: `spec_del_confirm:${id}` }],
           [{ text: '❌ Отмена',      callback_data: `spec_edit:${id}` }],
@@ -377,6 +382,7 @@ function registerAdminSubscriptionsHandler(bot) {
         ctx.session.editingSpecField = field;
         ctx.session.step             = 'spec_edit_field';
         const o = svc.findSpecialOfferById(id);
+        if (!o) return ctx.reply('Предложение не найдено.');
         const cur = field === 'price' ? svc.formatPrice(o.price) : escapeHtml(o[field]);
         return ctx.reply(
           `Текущее значение: <b>${cur}</b>\n\nВведите ${label}:`,

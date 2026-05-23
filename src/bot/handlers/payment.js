@@ -30,13 +30,15 @@ async function initiatePayment(ctx, subscriptionId) {
   if (TEST_MODE) {
     const price = subscriptionService.formatPrice(sub.price);
     return ctx.reply(
-      `💳 <b>Оплата абонемента</b>\n\n<b>${sub.name}</b>\nСумма: <b>${price}</b>`,
+      `💳 <b>Demo payment flow</b>\n\n` +
+        `<b>${sub.name}</b>\nСумма: <b>${price}</b>\n\n` +
+        'Это demo-режим: реальные деньги не списываются.',
       {
         parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '✅ Оплата прошла успешно', callback_data: `tpay_ok:${paymentDbId}:${sub.id}` }],
-            [{ text: '❌ Оплата не прошла', callback_data: `tpay_fail:${paymentDbId}:${sub.id}` }],
+            [{ text: '✅ Тестовая оплата успешно пройдена', callback_data: `tpay_ok:${paymentDbId}:${sub.id}` }],
+            [{ text: '❌ Тестовая оплата отклонена', callback_data: `tpay_fail:${paymentDbId}:${sub.id}` }],
           ],
         },
       }
@@ -87,7 +89,7 @@ async function handleTestSuccess(ctx, paymentDbId, subId) {
 
   await notifierService.notifyAll(
     ctx.telegram,
-    `💰 Новая оплата: ${subName} — ${price}\nПользователь: ${userLabel(ctx)}`
+    `💰 Demo payment completed: ${subName} — ${price}\nПользователь: ${userLabel(ctx)}`
   );
 }
 
@@ -101,7 +103,9 @@ async function handleTestFail(ctx, paymentDbId, subId) {
   await ctx.editMessageReplyMarkup({ inline_keyboard: [] }).catch(() => {});
 
   await ctx.reply(
-    `😔 Попробуйте ещё раз или обратитесь к администратору: ${process.env.CLUB_PHONE || 'администратору клуба'}`,
+    `😔 Тестовая оплата отклонена.\n\n` +
+      `Это demo-режим: реальные деньги не списываются.\n` +
+      `Попробуйте ещё раз или обратитесь к администратору: ${process.env.CLUB_PHONE || 'администратору клуба'}`,
     {
       reply_markup: {
         inline_keyboard: [
@@ -116,7 +120,7 @@ async function handleTestFail(ctx, paymentDbId, subId) {
 
   await notifierService.notifyAll(
     ctx.telegram,
-    `⚠️ Неудачная оплата: ${subName} — ${price}\nПользователь: ${userLabel(ctx)}`
+    `⚠️ Demo payment declined: ${subName} — ${price}\nПользователь: ${userLabel(ctx)}`
   );
 }
 

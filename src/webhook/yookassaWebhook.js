@@ -2,10 +2,14 @@ const paymentService = require('../services/paymentService');
 
 function buildSuccessMessage(subscriptionId) {
   const isSingleVisit = subscriptionId === 'single_visit';
+  const isDemoPayment = process.env.TEST_MODE === 'true';
 
-  const header = isSingleVisit
-    ? '🎉 <b>Оплата подтверждена!</b>\n\n'
-    : '🎉 <b>Оплата подтверждена! Ваш абонемент оформлен.</b>\n\n';
+  const header = isDemoPayment
+    ? '🎉 <b>Тестовая оплата успешно пройдена!</b>\n\n' +
+      'Это demo-режим: реальные деньги не списываются.\n\n'
+    : isSingleVisit
+      ? '🎉 <b>Оплата подтверждена!</b>\n\n'
+      : '🎉 <b>Оплата подтверждена! Ваш абонемент оформлен.</b>\n\n';
 
   const activation = isSingleVisit ? '' :
     'ℹ️ <b>Активация абонемента:</b>\n' +

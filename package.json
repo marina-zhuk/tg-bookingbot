@@ -1,7 +1,7 @@
 {
-  "name": "sports-club-bot",
+  "name": "fitness-club-telegram-mvp",
   "version": "1.0.0",
-  "description": "Telegram bot for sports club subscription management",
+  "description": "Telegram MVP for fitness club subscriptions, mock payments, admin panel and CSV export",
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {

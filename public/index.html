@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Telegram Bot для фитнес-клуба</title>
+    <meta
+      name="description"
+      content="Portfolio demo Telegram MVP for fitness club subscriptions, mock payments, admin panel, CSV export and broadcasts."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fb;
+        --text: #151820;
+        --muted: #5f6978;
+        --line: #dce2ea;
+        --accent: #176b5c;
+        --accent-soft: #e5f3ef;
+        --panel: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.5;
+      }
+
+      .page {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+
+      .hero {
+        padding: 40px 0 28px;
+      }
+
+      .badge {
+        display: inline-flex;
+        padding: 6px 10px;
+        border-radius: 999px;
+        color: var(--accent);
+        background: var(--accent-soft);
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      h1 {
+        margin: 18px 0 12px;
+        font-size: clamp(34px, 6vw, 58px);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: 24px;
+      }
+
+      p {
+        margin: 0 0 14px;
+        color: var(--muted);
+      }
+
+      .lead {
+        max-width: 720px;
+        font-size: 20px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 28px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 22px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li {
+        margin: 8px 0;
+      }
+
+      code {
+        padding: 2px 6px;
+        border-radius: 5px;
+        background: #eef1f5;
+      }
+
+      .flow {
+        display: grid;
+        gap: 10px;
+        counter-reset: step;
+      }
+
+      .step {
+        border-left: 3px solid var(--accent);
+        padding: 6px 0 6px 14px;
+        color: var(--muted);
+      }
+
+      .note {
+        margin-top: 28px;
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid #f0d28a;
+        background: #fff7df;
+        color: #5d4300;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        background: var(--accent);
+        color: #ffffff;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .button.secondary {
+        background: #ffffff;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 28px 16px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <span class="badge">Portfolio demo / Commercial MVP</span>
+        <h1>Telegram Bot для фитнес-клуба</h1>
+        <p class="lead">
+          MVP Telegram-бота для фитнес-клуба: каталог абонементов, регистрация клиента,
+          demo payment flow, admin panel, CSV export и рассылки.
+        </p>
+        <div class="actions" aria-label="Project links">
+          <a class="button" href="https://t.me/FitAdmin2_bot" target="_blank" rel="noreferrer">
+            Open Telegram bot
+          </a>
+          <a class="button secondary" href="/api/healthz">
+            Check health endpoint
+          </a>
+        </div>
+      </section>
+
+      <section class="grid" aria-label="Project details">
+        <div class="panel">
+          <h2>Features</h2>
+          <ul>
+            <li>Регистрация клиента: ФИО, телефон, email</li>
+            <li>Каталог абонементов и спецпредложений</li>
+            <li>Demo payment flow без списания денег</li>
+            <li>Admin panel, CSV export и broadcast</li>
+            <li>Управление абонементами и ценами</li>
+            <li>Подготовка к production YooKassa setup</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h2>Stack</h2>
+          <ul>
+            <li>Node.js</li>
+            <li>Telegraf</li>
+            <li>Express</li>
+            <li>SQLite</li>
+            <li>YooKassa SDK</li>
+            <li>PM2 config</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h2>User Flow</h2>
+          <div class="flow">
+            <div class="step">/start открывает регистрацию</div>
+            <div class="step">Пользователь вводит ФИО, телефон и email</div>
+            <div class="step">Выбирает абонемент из каталога</div>
+            <div class="step">Проходит demo payment flow</div>
+            <div class="step">Получает confirmation message</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Demo Mode</h2>
+          <p>
+            Portfolio version runs with <code>TEST_MODE=true</code>. Real YooKassa payments are not
+            connected in this demo, and real money is not charged.
+          </p>
+          <p>
+            For production, the project needs webhook hosting, YooKassa credentials, legal checks,
+            monitoring and backups.
+          </p>
+          <p>
+            On Vercel, the bot uses <code>/api/telegram</code> as a webhook endpoint for demo mode.
+            Runtime data is temporary and should be moved to an external database for production.
+          </p>
+        </div>
+      </section>
+
+      <section class="note">
+        This Vercel deployment includes a portfolio preview page and a demo Telegram webhook endpoint.
+        For production, move persistence to an external database and complete the webhook/payment setup.
+      </section>
+    </main>
+  </body>
+</html>

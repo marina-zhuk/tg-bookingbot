@@ -74,7 +74,8 @@ async function sendDailyReport(telegram) {
   `).all(startStr, endStr);
 
   const header = `${fmtHeader(periodStart)} — ${fmtHeader(periodEnd)}`;
-  let text = `📊 <b>Ежедневный отчёт Gravity Sport</b>\n📅 ${header}\n\n`;
+  const clubName = process.env.CLUB_NAME || 'Demo Fitness Club';
+  let text = `📊 <b>Ежедневный отчёт ${escapeHtml(clubName)}</b>\n📅 ${header}\n\n`;
 
   if (succeeded.length === 0 && canceled.length === 0) {
     text += 'Оплат за этот период не было.';
