@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FitAdmin Bot — Telegram-бот для продаж абонементов</title>
+    <meta
+      name="description"
+      content="Telegram-бот для фитнес-клуба: каталог абонементов, сбор заявок, сценарий оплаты, админ-панель, Excel-отчёт и рассылки клиентам."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="FitAdmin Bot">
+        <span class="brand-mark">F</span>
+        <span>FitAdmin Bot</span>
+      </a>
+      <nav class="nav" aria-label="Навигация">
+        <a href="#features">Функции</a>
+        <a href="#flows">Сценарии</a>
+        <a href="#screenshots">Скриншоты</a>
+        <a href="#stack">Технологии</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Telegram-бот для продаж абонементов</p>
+          <h1>Продавайте абонементы прямо в Telegram</h1>
+          <p class="hero-copy">
+            FitAdmin Bot помогает клубу принимать заявки, показывать тарифы,
+            вести оплативших клиентов и быстро выгружать Excel-отчёт для администратора.
+          </p>
+          <div class="actions">
+            <a class="button primary js-telegram-link" href="#" aria-label="Открыть Telegram-бота">
+              Открыть Telegram-бота
+            </a>
+            <a class="button secondary js-github-link" href="#" aria-label="Посмотреть GitHub">
+              Посмотреть код
+            </a>
+          </div>
+          <div class="trust-row" aria-label="Что входит в решение">
+            <span>Каталог</span>
+            <span>Заявка</span>
+            <span>Сценарий оплаты</span>
+            <span>Excel-отчёт</span>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Ключевые возможности">
+          <div class="panel-header">
+            <span class="status-dot"></span>
+            <span>FitAdmin Club</span>
+          </div>
+          <div class="panel-screen">
+            <div class="screen-line wide"></div>
+            <div class="screen-line"></div>
+            <div class="screen-card active">
+              <span>Basic — 1 месяц</span>
+              <strong>3 900 ₽</strong>
+            </div>
+            <div class="screen-card">
+              <span>Unlimited — 6 месяцев</span>
+              <strong>29 900 ₽</strong>
+            </div>
+            <div class="screen-action">Перейти к оплате</div>
+          </div>
+          <div class="metric-grid">
+            <div>
+              <span class="metric">8</span>
+              <span class="metric-label">сценариев</span>
+            </div>
+            <div>
+              <span class="metric">2</span>
+              <span class="metric-label">исхода оплаты</span>
+            </div>
+            <div>
+              <span class="metric">XLSX</span>
+              <span class="metric-label">отчёт оплат</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section commercial-strip" aria-label="Быстрый результат">
+        <div>
+          <span class="strip-label">Результат для клиента</span>
+          <strong>Клиент видит тарифы и оставляет контакты без переписки с администратором.</strong>
+        </div>
+        <div>
+          <span class="strip-label">Результат для клуба</span>
+          <strong>Список оплативших, Excel-отчёт и база для повторных продаж.</strong>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Проблема</p>
+          <h2>Когда продажи абонементов завязаны на переписку, клуб теряет скорость</h2>
+        </div>
+        <div class="problem-grid">
+          <article class="card">
+            <h3>Клиенту нужно быстро увидеть цену</h3>
+            <p>Если тарифы приходится отправлять вручную, часть людей просто не доходит до покупки.</p>
+          </article>
+          <article class="card">
+            <h3>Администратор тратит время на повторы</h3>
+            <p>Вопросы про абонементы, сроки и условия можно закрыть готовым Telegram-сценарием.</p>
+          </article>
+          <article class="card">
+            <h3>Оплаты и контакты сложно быстро проверить</h3>
+            <p>Менеджеру нужен список клиентов и понятный отчёт, а не поиск по чату и ручная таблица.</p>
+          </article>
+          <article class="card">
+            <h3>Акции не доходят до базы</h3>
+            <p>Когда нет broadcast-инструмента, клубу сложнее возвращать клиентов на новые предложения.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="section-heading">
+          <p class="eyebrow">Возможности</p>
+          <h2>Что получает клуб</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="icon">01</span>
+            <h3>Каталог без ручных сообщений</h3>
+            <p>Клиент открывает бот и сам видит абонементы, разовые посещения и спецпредложения.</p>
+          </article>
+          <article class="feature-card">
+            <span class="icon">02</span>
+            <h3>Контакты до покупки</h3>
+            <p>Бот собирает ФИО, телефон и email, чтобы администратор мог вернуться к клиенту.</p>
+          </article>
+          <article class="feature-card">
+            <span class="icon">03</span>
+            <h3>Сценарий оплаты</h3>
+            <p>Бот показывает путь от выбора тарифа до статуса оплаты и готов к подключению платёжного провайдера.</p>
+          </article>
+          <article class="feature-card">
+            <span class="icon">04</span>
+            <h3>Мини-CRM внутри проекта</h3>
+            <p>Контакты, выбранный абонемент и статус оплаты сохраняются в базе для админ-панели.</p>
+          </article>
+          <article class="feature-card">
+            <span class="icon">05</span>
+            <h3>Понятная админ-панель</h3>
+            <p>Администратор видит оплативших, выгружает Excel-отчёт и управляет каталогом.</p>
+          </article>
+          <article class="feature-card">
+            <span class="icon">06</span>
+            <h3>Рассылки по базе бота</h3>
+            <p>Можно подготовить сообщение, увидеть preview и отправить его пользователям.</p>
+          </article>
+          <article class="feature-card">
+            <span class="icon">07</span>
+            <h3>Доступ только для админов</h3>
+            <p>Админ-панель открывается только Telegram ID, указанным в <code>ADMIN_IDS</code>.</p>
+          </article>
+          <article class="feature-card">
+            <span class="icon">08</span>
+            <h3>Статусы оплаты видны сразу</h3>
+            <p>Платежные записи хранят <code>pending</code>, <code>succeeded</code> и <code>canceled</code>.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section split" id="flows">
+        <div>
+          <div class="section-heading compact">
+            <p class="eyebrow">Для клиента</p>
+            <h2>Сценарий клиента</h2>
+          </div>
+          <ol class="steps">
+            <li>Открывает Telegram-бота.</li>
+            <li>Выбирает абонемент или разовое посещение.</li>
+            <li>Оставляет контакты для связи.</li>
+            <li>Проходит сценарий оплаты.</li>
+            <li>Получает понятный статус.</li>
+          </ol>
+        </div>
+        <div>
+          <div class="section-heading compact">
+            <p class="eyebrow">Для администратора</p>
+            <h2>Сценарий администратора</h2>
+          </div>
+          <ol class="steps">
+            <li>Открывает админ-панель.</li>
+            <li>Видит пользователей и оплаты.</li>
+            <li>Скачивает Excel-отчёт оплат.</li>
+            <li>Запускает рассылку по базе.</li>
+            <li>Обновляет тарифы и спецпредложения.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="notice" aria-label="Подключение оплаты">
+        <h2>Архитектура готова к подключению оплаты</h2>
+        <p>
+          В текущей версии можно проверить весь путь клиента: выбор абонемента, переход к оплате,
+          успешный статус и запись в админ-панели. Платёжный провайдер подключается к уже подготовленной структуре.
+        </p>
+      </section>
+
+      <section class="section" id="screenshots">
+        <div class="section-heading">
+          <p class="eyebrow">Скриншоты</p>
+          <h2>Как выглядит работа системы</h2>
+          <p>Клиент проходит путь в Telegram, администратор видит заявки и оплаты, выгружает Excel-отчёт и запускает рассылку.</p>
+        </div>
+        <div class="screenshot-grid">
+          <figure class="screenshot-card" data-path="/docs/screenshots/client-menu.png">
+            <img src="../docs/screenshots/client-menu.png" alt="Скриншот меню клиента" />
+            <figcaption>Меню клиента</figcaption>
+          </figure>
+          <figure class="screenshot-card" data-path="/docs/screenshots/subscription-flow.png">
+            <img src="../docs/screenshots/subscription-flow.png" alt="Скриншот выбора абонемента" />
+            <figcaption>Выбор абонемента</figcaption>
+          </figure>
+          <figure class="screenshot-card" data-path="/docs/screenshots/mock-payment.png">
+            <img src="../docs/screenshots/mock-payment.png" alt="Скриншот сценария оплаты" />
+            <figcaption>Сценарий оплаты</figcaption>
+          </figure>
+          <figure class="screenshot-card" data-path="/docs/screenshots/admin-panel.png">
+            <img src="../docs/screenshots/admin-panel.png" alt="Скриншот админ-панели" />
+            <figcaption>Админ-панель</figcaption>
+          </figure>
+          <figure class="screenshot-card" data-path="/docs/screenshots/admin-subscriptions.png">
+            <img src="../docs/screenshots/admin-subscriptions.png" alt="Скриншот управления абонементами" />
+            <figcaption>Управление абонементами</figcaption>
+          </figure>
+          <figure class="screenshot-card" data-path="/docs/screenshots/crm.png">
+            <img src="../docs/screenshots/crm.png" alt="Скриншот списка оплативших" />
+            <figcaption>Список оплативших</figcaption>
+          </figure>
+          <figure class="screenshot-card report-card" data-path="/docs/screenshots/excel-report.png">
+            <img src="../docs/screenshots/excel-report.png" alt="Скриншот Excel-отчёта оплат" />
+            <figcaption>Excel-отчёт оплат</figcaption>
+          </figure>
+          <figure class="screenshot-card" data-path="/docs/screenshots/broadcasts.png">
+            <img src="../docs/screenshots/broadcasts.png" alt="Скриншот рассылки клиентам" />
+            <figcaption>Рассылка клиентам</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="stack">
+        <div class="section-heading">
+          <p class="eyebrow">Технологии</p>
+          <h2>Технологии проекта</h2>
+        </div>
+        <div class="stack-grid">
+          <div class="stack-item">Node.js</div>
+          <div class="stack-item">Telegraf / Telegram Bot API</div>
+          <div class="stack-item">Express</div>
+          <div class="stack-item">SQLite database</div>
+          <div class="stack-item">Env variables</div>
+          <div class="stack-item">Excel-отчёт оплат</div>
+          <div class="stack-item">GitHub</div>
+          <div class="stack-item">Deployment-ready structure</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Адаптация</p>
+          <h2>Такой MVP легко адаптировать под другой локальный бизнес</h2>
+        </div>
+        <div class="business-list">
+          <span>фитнес-клуб</span>
+          <span>йога-студия</span>
+          <span>школа танцев</span>
+          <span>салон красоты</span>
+          <span>образовательный курс</span>
+          <span>спортивная секция</span>
+          <span>клуб по подписке</span>
+        </div>
+      </section>
+
+      <section class="section split">
+        <div>
+          <div class="section-heading compact">
+            <p class="eyebrow">Внедрение</p>
+            <h2>Запуск под ваш клуб проходит по понятному плану</h2>
+          </div>
+        </div>
+        <div>
+          <ol class="steps">
+            <li>Адаптируем тарифы, тексты, контакты клуба и сценарий регистрации.</li>
+            <li>Настраиваем админ-доступ, отчёты и рассылки для вашей команды.</li>
+            <li>Проверяем путь клиента от первого сообщения до статуса оплаты.</li>
+            <li>Подключаем платёжного провайдера к подготовленной архитектуре.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="cta">
+        <h2>Хотите такой Telegram-бот под свой бизнес?</h2>
+        <p>Адаптируем каталог, регистрацию, отчёты, рассылки и оплату под фитнес-клуб, студию, школу или сервис по подписке.</p>
+        <div class="actions center">
+          <a class="button primary js-telegram-link" href="#">Открыть Telegram-бота</a>
+          <a class="button secondary js-github-link" href="#">Посмотреть код на GitHub</a>
+          <a class="button tertiary" href="https://t.me/prssfff" target="_blank" rel="noreferrer">Адаптировать под другой бизнес</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

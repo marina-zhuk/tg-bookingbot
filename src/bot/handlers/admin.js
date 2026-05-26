@@ -1,5 +1,5 @@
 const { adminGuard, isAdmin } = require('../middlewares/adminGuard');
-const { generateCSV } = require('../../services/exportService');
+const { generateXLSX } = require('../../services/exportService');
 const { broadcast } = require('../../services/broadcastService');
 const notifierService = require('../../services/notifierService');
 const db = require('../../db/database');
@@ -68,7 +68,7 @@ function registerAdminHandler(bot) {
     }
     if (data === 'admin_export') {
       await ctx.answerCbQuery();
-      return exportCSV(ctx);
+      return exportXLSX(ctx);
     }
     if (data === 'admin_broadcast_start') {
       await ctx.answerCbQuery();
@@ -233,7 +233,7 @@ async function showAdminMenu(ctx) {
     reply_markup: {
       inline_keyboard: [
         [{ text: '📋 Список оплативших', callback_data: 'admin_list' }],
-        [{ text: '📥 Экспорт CSV', callback_data: 'admin_export' }],
+        [{ text: '📥 Excel-отчёт оплат', callback_data: 'admin_export' }],
         [{ text: '📣 Рассылка', callback_data: 'admin_broadcast_start' }],
         [{ text: '🏷 Абонементы и цены', callback_data: 'subs_menu' }],
         [{ text: '👥 Уведомления', callback_data: 'notif_menu' }],
@@ -269,15 +269,18 @@ async function showPaidList(ctx) {
 
   await ctx.reply(
     `✅ <b>Оплатившие (последние 20)</b>\n\n${lines.join('\n\n')}` +
-      (rows.length === 20 ? '\n\n<i>Для полного списка используйте экспорт CSV.</i>' : ''),
+      (rows.length === 20 ? '\n\n<i>Для полного списка используйте Excel-отчёт оплат.</i>' : ''),
     { parse_mode: 'HTML' }
   );
 }
 
-async function exportCSV(ctx) {
-  const csv = generateCSV();
+async function exportXLSX(ctx) {
+  const xlsx = await generateXLSX();
   const date = new Date().toISOString().slice(0, 10);
-  await ctx.replyWithDocument({ source: csv, filename: `payments_${date}.csv` });
+  await ctx.replyWithDocument(
+    { source: xlsx, filename: `payments_${date}.xlsx` },
+    { caption: 'Excel-отчёт оплат. На телефоне удобнее открыть файл через Excel, Google Sheets или Numbers.' }
+  );
 }
 
 module.exports = { registerAdminHandler };

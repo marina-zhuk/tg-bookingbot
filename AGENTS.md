@@ -2,9 +2,9 @@
 
 ## Project
 
-Telegram MVP for a fitness club.
+Telegram MVP for a fictional fitness club demo brand.
 
-The bot demonstrates a commercial MVP for selling fitness club subscriptions through Telegram.
+The bot demonstrates a commercial MVP for selling FitAdmin Demo Club subscriptions through Telegram.
 
 Core demo features:
 
@@ -13,7 +13,7 @@ Core demo features:
 - Mock payment flow for portfolio demo.
 - Admin panel.
 - Broadcast tools.
-- CSV export.
+- Excel/XLSX payment report.
 
 ## Stack
 
@@ -46,10 +46,10 @@ TEST_MODE=true
 Recommended demo club values:
 
 ```env
-CLUB_NAME=Demo Fitness Club
-CLUB_ADDRESS=Demo city, Demo street
+CLUB_NAME=FitAdmin Demo Club
+CLUB_ADDRESS=Demo City, 10 Portfolio Street
 CLUB_PHONE=+7 000 000-00-00
-CLUB_HOURS=Пн–Пт 06:00–23:00, Сб–Вс 07:00–22:00
+CLUB_HOURS=Пн–Пт 07:00–22:00, Сб–Вс 09:00–21:00
 ```
 
 Optional for production:
@@ -84,7 +84,7 @@ NOTIFIERS_PATH=./config/notifiers.json
 - Do not expose real Telegram tokens, admin IDs, payment keys, shop IDs, customer data, phone numbers, addresses, or private URLs.
 - Use `.env.example` for placeholders only.
 - Keep the project simple and demo-friendly.
-- Preserve user flow, admin flow, CSV export, broadcast tools, subscription catalog, and mock payment flow.
+- Preserve user flow, admin flow, Excel/XLSX payment report, broadcast tools, subscription catalog, and mock payment flow.
 - Do not rename internal functions or rewrite business logic unless the task explicitly requires it.
 - Do not remove existing integrations just to make the demo cleaner.
 
@@ -97,5 +97,5 @@ NOTIFIERS_PATH=./config/notifiers.json
 - Demo payment flow works.
 - Admin can open admin panel.
 - Admin can view payments/users if these features exist.
-- CSV export works if implemented.
+- Excel/XLSX payment report works if implemented.
 - README or project instructions explain demo status clearly.

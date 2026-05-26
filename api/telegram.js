@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'GET') {
     return res.status(200).json({
       ok: true,
-      service: 'fitness-club-telegram-mvp',
+      service: 'fitadmin-demo-club-bot',
       mode: 'telegram-webhook',
     });
   }

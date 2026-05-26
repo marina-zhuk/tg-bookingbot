@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const db = require('../db/database');
 
 // ---------------------------------------------------------------------------
@@ -7,7 +5,7 @@ const db = require('../db/database');
 // ---------------------------------------------------------------------------
 
 function _buildName(sub) {
-  return sub.type_id === 'single' ? sub.type_name : `${sub.type_name} — ${sub.duration}`;
+  return sub.type_id === 'single' ? sub.type_name : `${sub.type_name} - ${sub.duration}`;
 }
 
 function loadAll(includeHidden = false) {
@@ -29,23 +27,26 @@ function findPlanById(id) {
 }
 
 function getTypes() {
-  const rows = db
+  return db
     .prepare(
       'SELECT DISTINCT type_id, type_name, type_desc, MIN(sort_order) as ord ' +
-      'FROM subscriptions GROUP BY type_id ORDER BY ord ASC'
+        'FROM subscriptions GROUP BY type_id ORDER BY ord ASC'
     )
     .all();
-  return rows;
 }
 
-// Reconstruct the config-shaped object that catalog.js expects
 function loadConfig() {
   const subs = loadAll();
   const typeMap = {};
   for (const sub of subs) {
     if (sub.type_id === 'single') continue;
     if (!typeMap[sub.type_id]) {
-      typeMap[sub.type_id] = { id: sub.type_id, name: sub.type_name, description: sub.type_desc, plans: [] };
+      typeMap[sub.type_id] = {
+        id: sub.type_id,
+        name: sub.type_name,
+        description: sub.type_desc,
+        plans: [],
+      };
     }
     typeMap[sub.type_id].plans.push({
       id: sub.id,
@@ -58,7 +59,13 @@ function loadConfig() {
 
   const singleSub = subs.find((s) => s.type_id === 'single');
   const single = singleSub
-    ? { id: singleSub.id, name: singleSub.type_name, description: singleSub.type_desc, duration: singleSub.duration, price: singleSub.price }
+    ? {
+        id: singleSub.id,
+        name: singleSub.type_name,
+        description: singleSub.type_desc,
+        duration: singleSub.duration,
+        price: singleSub.price,
+      }
     : null;
 
   const specRows = db
@@ -72,7 +79,7 @@ function loadConfig() {
 }
 
 function formatPrice(kopecks) {
-  return (kopecks / 100).toLocaleString('ru-RU') + ' ₽';
+  return `${(kopecks / 100).toLocaleString('ru-RU')} ₽`;
 }
 
 // ---------------------------------------------------------------------------
@@ -83,9 +90,14 @@ function updatePrice(id, newPriceKopecks, adminTelegramId, adminName) {
   const sub = db.prepare('SELECT * FROM subscriptions WHERE id = ?').get(id);
   if (!sub) throw new Error('Абонемент не найден');
   db.prepare('UPDATE subscriptions SET price = ? WHERE id = ?').run(newPriceKopecks, id);
-  _logChange(id, adminTelegramId, adminName, 'price_change',
+  _logChange(
+    id,
+    adminTelegramId,
+    adminName,
+    'price_change',
     JSON.stringify({ price: sub.price }),
-    JSON.stringify({ price: newPriceKopecks }));
+    JSON.stringify({ price: newPriceKopecks })
+  );
 }
 
 function toggleActive(id, adminTelegramId, adminName) {
@@ -112,18 +124,31 @@ function addSubscription(data, adminTelegramId, adminName) {
     INSERT INTO subscriptions (id, type_id, type_name, type_desc, duration, duration_display, price, badge, sort_order)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
-    id, typeId, typeName, typeDesc,
-    data.duration, durationDisplay,
-    data.price, data.badge || null, maxOrder + 1
-  );
-  _logChange(id, adminTelegramId, adminName, 'added', null, JSON.stringify({
-    ...data,
     id,
-    type_id: typeId,
-    type_name: typeName,
-    type_desc: typeDesc,
-    duration_display: durationDisplay,
-  }));
+    typeId,
+    typeName,
+    typeDesc,
+    data.duration,
+    durationDisplay,
+    data.price,
+    data.badge || null,
+    maxOrder + 1
+  );
+  _logChange(
+    id,
+    adminTelegramId,
+    adminName,
+    'added',
+    null,
+    JSON.stringify({
+      ...data,
+      id,
+      type_id: typeId,
+      type_name: typeName,
+      type_desc: typeDesc,
+      duration_display: durationDisplay,
+    })
+  );
   return id;
 }
 
@@ -161,9 +186,9 @@ function findSpecialOfferById(id) {
 
 function addSpecialOffer(data, adminTelegramId, adminName) {
   const maxOrder = db.prepare('SELECT MAX(sort_order) as m FROM special_offers').get().m || 0;
-  const result = db.prepare(
-    'INSERT INTO special_offers (name, price, description, sort_order) VALUES (?, ?, ?, ?)'
-  ).run(data.name, data.price, data.description || '', maxOrder + 1);
+  const result = db
+    .prepare('INSERT INTO special_offers (name, price, description, sort_order) VALUES (?, ?, ?, ?)')
+    .run(data.name, data.price, data.description || '', maxOrder + 1);
   const newId = result.lastInsertRowid;
   _logChange(`special_${newId}`, adminTelegramId, adminName, 'added', null, JSON.stringify(data));
   return newId;
@@ -175,9 +200,14 @@ function updateSpecialOffer(id, field, value, adminTelegramId, adminName) {
   const allowed = ['name', 'price', 'description'];
   if (!allowed.includes(field)) throw new Error('Недопустимое поле');
   db.prepare(`UPDATE special_offers SET ${field} = ? WHERE id = ?`).run(value, id);
-  _logChange(`special_${id}`, adminTelegramId, adminName, `${field}_change`,
+  _logChange(
+    `special_${id}`,
+    adminTelegramId,
+    adminName,
+    `${field}_change`,
     JSON.stringify({ [field]: offer[field] }),
-    JSON.stringify({ [field]: value }));
+    JSON.stringify({ [field]: value })
+  );
 }
 
 function toggleSpecialActive(id, adminTelegramId, adminName) {
@@ -204,8 +234,21 @@ function _logChange(subscriptionId, adminTelegramId, adminName, action, oldValue
 }
 
 module.exports = {
-  loadAll, findById, findPlanById, loadConfig, getTypes, formatPrice,
-  updatePrice, toggleActive, addSubscription, deleteSubscription, getHistory,
-  loadSpecialOffers, findSpecialOfferById, addSpecialOffer,
-  updateSpecialOffer, toggleSpecialActive, deleteSpecialOffer,
+  loadAll,
+  findById,
+  findPlanById,
+  loadConfig,
+  getTypes,
+  formatPrice,
+  updatePrice,
+  toggleActive,
+  addSubscription,
+  deleteSubscription,
+  getHistory,
+  loadSpecialOffers,
+  findSpecialOfferById,
+  addSpecialOffer,
+  updateSpecialOffer,
+  toggleSpecialActive,
+  deleteSpecialOffer,
 };

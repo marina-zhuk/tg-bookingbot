@@ -5,7 +5,7 @@ const { createServer } = require('./webhook/server');
 const { registerYookassaWebhook } = require('./webhook/yookassaWebhook');
 const { startScheduler } = require('./services/reportService');
 
-const BOT_LAUNCH_TIMEOUT_MS = 30_000;
+const TELEGRAM_READY_TIMEOUT_MS = 15_000;
 
 function validateEnv() {
   const required = ['BOT_TOKEN'];
@@ -58,10 +58,14 @@ async function main() {
     console.log(`Express listening on port ${port} (YooKassa webhook)`);
     console.log('Bot starting in polling mode...');
     await withTimeout(
-      bot.launch({ dropPendingUpdates: true }),
-      BOT_LAUNCH_TIMEOUT_MS,
-      'Telegram bot launch timed out. Check BOT_TOKEN, network access, VPN/proxy, or Telegram API availability.'
+      bot.telegram.getMe(),
+      TELEGRAM_READY_TIMEOUT_MS,
+      'Telegram API readiness check timed out. Check BOT_TOKEN, network access, VPN/proxy, or Telegram API availability.'
     );
+    bot.launch({ dropPendingUpdates: true }).catch((err) => {
+      console.error('Telegram polling error:', err);
+      process.exit(1);
+    });
     console.log('Bot is running. Send /start in Telegram to test.');
   }
 

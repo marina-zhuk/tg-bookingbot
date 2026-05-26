@@ -7,7 +7,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function registerStartHandler(bot) {
   bot.start(async (ctx) => {
-    const clubName = process.env.CLUB_NAME || 'Demo Fitness Club';
+    const clubName = process.env.CLUB_NAME || 'FitAdmin Demo Club';
     touchVisitor(ctx.from.id, ctx.from.username);
     const user = userService.findByTelegramId(ctx.from.id);
     if (user) {

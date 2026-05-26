@@ -74,7 +74,7 @@ async function sendDailyReport(telegram) {
   `).all(startStr, endStr);
 
   const header = `${fmtHeader(periodStart)} — ${fmtHeader(periodEnd)}`;
-  const clubName = process.env.CLUB_NAME || 'Demo Fitness Club';
+  const clubName = process.env.CLUB_NAME || 'FitAdmin Demo Club';
   let text = `📊 <b>Ежедневный отчёт ${escapeHtml(clubName)}</b>\n📅 ${header}\n\n`;
 
   if (succeeded.length === 0 && canceled.length === 0) {

@@ -1,7 +1,7 @@
 {
-  "name": "fitness-club-telegram-mvp",
+  "name": "fitadmin-demo-club-bot",
   "version": "1.0.0",
-  "description": "Telegram MVP for fitness club subscriptions, mock payments, admin panel and CSV export",
+  "description": "Portfolio demo Telegram MVP for FitAdmin Demo Club subscriptions, mock payments, admin panel and Excel payment report",
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@a2seven/yoo-checkout": "^1.1.4",
-    "csv-stringify": "^6.4.6",
     "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
     "express": "^4.18.3",
     "node-cron": "^4.2.1",
     "telegraf": "^4.16.3"

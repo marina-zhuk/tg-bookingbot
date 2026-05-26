@@ -30,22 +30,27 @@ async function initiatePayment(ctx, subscriptionId) {
   if (TEST_MODE) {
     const price = subscriptionService.formatPrice(sub.price);
     return ctx.reply(
-      `💳 <b>Demo payment flow</b>\n\n` +
-        `<b>${sub.name}</b>\nСумма: <b>${price}</b>\n\n` +
-        'Это demo-режим: реальные деньги не списываются.',
+      `<b>Demo / mock payment flow</b>\n\n` +
+        `<b>${sub.name}</b>\n` +
+        `Сумма: <b>${price}</b>\n\n` +
+        'Это демо-оплата для портфолио.\n' +
+        'Реальная платежная система не подключена.\n' +
+        'В демо можно проверить успешную и неуспешную оплату.\n\n' +
+        '<b>Реальные деньги не списываются.</b>',
       {
         parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '✅ Тестовая оплата успешно пройдена', callback_data: `tpay_ok:${paymentDbId}:${sub.id}` }],
-            [{ text: '❌ Тестовая оплата отклонена', callback_data: `tpay_fail:${paymentDbId}:${sub.id}` }],
+            [{ text: 'Демо: успешная оплата', callback_data: `tpay_ok:${paymentDbId}:${sub.id}` }],
+            [{ text: 'Демо: неуспешная оплата', callback_data: `tpay_fail:${paymentDbId}:${sub.id}` }],
+            [{ text: 'Главное меню', callback_data: 'main_menu' }],
           ],
         },
       }
     );
   }
 
-  const waitMsg = await ctx.reply('⏳ Создаём платёж...');
+  const waitMsg = await ctx.reply('Создаем платеж...');
 
   try {
     const payment = await paymentService.createYookassaPayment({
@@ -58,13 +63,16 @@ async function initiatePayment(ctx, subscriptionId) {
     await ctx.telegram.deleteMessage(ctx.chat.id, waitMsg.message_id).catch(() => {});
 
     await ctx.reply(
-      `💳 <b>Оплата абонемента</b>\n\n<b>${sub.name}</b>\nСумма: <b>${subscriptionService.formatPrice(sub.price)}</b>\n\nНажмите кнопку ниже для оплаты. После успешной оплаты вы получите подтверждение здесь.`,
+      `<b>Оплата абонемента</b>\n\n` +
+        `<b>${sub.name}</b>\n` +
+        `Сумма: <b>${subscriptionService.formatPrice(sub.price)}</b>\n\n` +
+        'Нажмите кнопку ниже для оплаты. После успешной оплаты подтверждение придет сюда.',
       {
         parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [
-            [{ text: `💳 Оплатить ${subscriptionService.formatPrice(sub.price)}`, url: payment.confirmation.confirmation_url }],
-            [{ text: '🏠 Главное меню', callback_data: 'main_menu' }],
+            [{ text: `Оплатить ${subscriptionService.formatPrice(sub.price)}`, url: payment.confirmation.confirmation_url }],
+            [{ text: 'Главное меню', callback_data: 'main_menu' }],
           ],
         },
       }
@@ -78,7 +86,7 @@ async function initiatePayment(ctx, subscriptionId) {
 
 async function handleTestSuccess(ctx, paymentDbId, subId) {
   const sub = subscriptionService.findById(subId);
-  const price = sub ? subscriptionService.formatPrice(sub.price) : '—';
+  const price = sub ? subscriptionService.formatPrice(sub.price) : '-';
   const subName = sub ? sub.name : subId;
 
   paymentService.markSucceededById(Number(paymentDbId));
@@ -89,13 +97,13 @@ async function handleTestSuccess(ctx, paymentDbId, subId) {
 
   await notifierService.notifyAll(
     ctx.telegram,
-    `💰 Demo payment completed: ${subName} — ${price}\nПользователь: ${userLabel(ctx)}`
+    `Demo payment completed: ${subName} - ${price}\nПользователь: ${userLabel(ctx)}`
   );
 }
 
 async function handleTestFail(ctx, paymentDbId, subId) {
   const sub = subscriptionService.findById(subId);
-  const price = sub ? subscriptionService.formatPrice(sub.price) : '—';
+  const price = sub ? subscriptionService.formatPrice(sub.price) : '-';
   const subName = sub ? sub.name : subId;
 
   paymentService.markCanceledById(Number(paymentDbId));
@@ -103,15 +111,16 @@ async function handleTestFail(ctx, paymentDbId, subId) {
   await ctx.editMessageReplyMarkup({ inline_keyboard: [] }).catch(() => {});
 
   await ctx.reply(
-    `😔 Тестовая оплата отклонена.\n\n` +
-      `Это demo-режим: реальные деньги не списываются.\n` +
-      `Попробуйте ещё раз или обратитесь к администратору: ${process.env.CLUB_PHONE || 'администратору клуба'}`,
+    'Демо-оплата отклонена.\n\n' +
+      'Это demo/mock сценарий для портфолио.\n' +
+      'Реальная платежная система не подключена, деньги не списываются.\n\n' +
+      `Можно попробовать еще раз или обратиться к администратору: ${process.env.CLUB_PHONE || 'администратор клуба'}`,
     {
       reply_markup: {
         inline_keyboard: [
           [
-            { text: '🔄 Попробовать снова', callback_data: `buy_${subId}` },
-            { text: '🏠 Главное меню', callback_data: 'main_menu' },
+            { text: 'Попробовать снова', callback_data: `buy_${subId}` },
+            { text: 'Главное меню', callback_data: 'main_menu' },
           ],
         ],
       },
@@ -120,7 +129,7 @@ async function handleTestFail(ctx, paymentDbId, subId) {
 
   await notifierService.notifyAll(
     ctx.telegram,
-    `⚠️ Demo payment declined: ${subName} — ${price}\nПользователь: ${userLabel(ctx)}`
+    `Demo payment declined: ${subName} - ${price}\nПользователь: ${userLabel(ctx)}`
   );
 }
 
