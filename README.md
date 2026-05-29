@@ -1,308 +1,196 @@
-# FitAdmin Bot — Telegram-бот для фитнес-клуба
+# FitAdmin Bot
 
-**FitAdmin Bot** — portfolio demo Telegram MVP для вымышленного фитнес-клуба **FitAdmin Demo Club**.
+Portfolio demo Telegram MVP for a fictional fitness club, built to show how a local fitness business can sell memberships, collect client data, run admin actions, and export reports directly through Telegram.
 
-Проект показывает, как клуб может принимать заявки на абонементы прямо в Telegram: пользователь открывает бот, проходит регистрацию, смотрит каталог, выбирает абонемент и проходит demo/mock payment flow. Администратор открывает admin panel, видит оплативших клиентов, выгружает Excel-отчёт оплат, запускает рассылку и управляет demo-каталогом.
+Built as an AI-assisted commercial MVP. I handled product logic, scenario design, setup, testing, integration flow, debugging and portfolio packaging.
 
-Бизнес-проблема: фитнес-клубу нужен быстрый MVP для сбора лидов, демонстрации абонементов и базовой коммуникации с клиентами без сложной CRM на старте.
+## Live Demo
 
-Подходит для:
+- Telegram demo bot: https://t.me/FitAdmin2_bot
+- Landing/demo page: https://tg-bookingbot-gravity.vercel.app
 
-- фитнес-клубов;
-- студий танцев;
-- йога-студий;
-- спортивных секций;
-- школ и курсов;
-- салонов и локальных сервисных бизнесов с абонементами или пакетами услуг.
+## Business Problem
 
-## Возможности
+Fitness clubs often lose leads and purchase requests inside chats. Administrators repeat the same answers, manually collect contact details, and do not have a simple place to track who selected a membership, who completed payment, and who should receive follow-up messages.
 
-Реализовано:
+FitAdmin Bot demonstrates a compact MVP for fixing that flow: the client can register, choose a service, and pass through a demo payment scenario, while the administrator can view paid clients, manage the catalog, send broadcasts, and export an Excel report.
 
-- просмотр абонементов и спецпредложений;
-- оформление заявки через регистрацию: ФИО, телефон, email;
-- mock payment flow;
-- успешная demo-оплата;
-- неуспешная demo-оплата;
-- admin panel через команду `/admin`;
-- доступ администраторов через `ADMIN_IDS`;
-- дополнительные получатели уведомлений через `/admins`;
-- broadcast-рассылки по пользователям, которые открывали бот;
-- SQLite-хранилище для пользователей, посетителей и платежных записей;
-- статусы платежей: `pending`, `succeeded`, `canceled`;
-- Excel-отчёт оплативших клиентов в формате `.xlsx`;
-- управление абонементами, ценами и спецпредложениями из admin panel;
-- ежедневный отчет администраторам через `node-cron`.
+## What It Does
 
-За пределами текущего demo scope:
+- Client registration through `/start`.
+- Membership and service catalog.
+- Mock payment flow with successful and failed demo outcomes.
+- Admin panel through `/admin`.
+- Catalog management for memberships, prices, visibility, and special offers.
+- Excel/XLSX report for paid clients.
+- Broadcast flow for users who opened the bot.
+- SQLite storage for users, visitors, payments, catalog data, and admin change history.
 
-- отдельная CRM-воронка со сменой статуса клиента админом;
-- UI для управления ролями администраторов;
-- синхронизация с внешней CRM, 1C или Google Sheets;
-- интеграция с сервером клуба как future integration;
-- production payment flow с реальным платежным провайдером.
+## Client Flow
 
-## Stack
+1. Client opens the Telegram bot and sends `/start`.
+2. Bot registers the client: full name, phone, and email.
+3. Client opens the catalog.
+4. Client chooses a membership, single visit, or special offer.
+5. Bot shows the selected item and price.
+6. Client enters the mock payment flow.
+7. Client can test successful payment or failed payment.
+8. Bot stores the payment status and shows next-step club information.
 
-Реальный stack проекта:
+## Admin Flow
 
-- Node.js CommonJS;
-- Telegraf;
-- Express;
-- SQLite через `node:sqlite`;
-- Telegram Bot API;
-- YooKassa SDK как подготовка к будущей интеграции;
-- `node-cron` для ежедневного отчета;
-- `exceljs` для Excel-отчёта оплат в формате `.xlsx`;
-- `dotenv` для env variables;
-- `nodemon` для локального dev-запуска;
-- Vercel-ready структура для portfolio landing и API endpoints.
+1. Admin opens `/admin`.
+2. Bot checks access through `ADMIN_IDS`.
+3. Admin can view paid clients.
+4. Admin can export an Excel payment report.
+5. Admin can start and confirm a broadcast.
+6. Admin can manage notification recipients through `/admins`.
+7. Admin can manage memberships, prices, visibility, special offers, and view change history.
 
-## Demo limitations
+## Mock Payment Flow
 
-- Payment flow работает в mock/demo mode.
-- Production payment provider входит в future integration scope.
-- Интеграция с сервером клуба входит в future integration scope.
-- Данные клуба, цены и пользовательские примеры вымышленные.
-- Проект предназначен для портфолио и демонстрации commercial MVP.
-- Runtime SQLite на Vercel подходит только для demo preview. Для production нужна внешняя база данных.
-- YooKassa credentials не нужны для demo mode.
+В демо-версии реализован mock payment flow: успешная и неуспешная оплата без подключения реального платёжного провайдера. Для production можно подключить YouKassa, CloudPayments или другой сервис.
 
-## Mock payment flow
+The demo flow does not charge real money. `TEST_MODE=true` keeps the bot in safe portfolio mode and shows fake payment buttons instead of creating a real YooKassa payment.
 
-В демо-версии реализован mock payment flow: успешная и неуспешная оплата проходят в безопасном demo mode без реального списания денег. Архитектура подготовлена к будущей интеграции с ЮKassa / CloudPayments / другой платежной системой.
+## Tech Stack
 
-В пользовательском сценарии бот явно сообщает:
+- Node.js CommonJS
+- Telegraf
+- Telegram Bot API
+- Express
+- SQLite through `node:sqlite`
+- `dotenv`
+- `exceljs`
+- `node-cron`
+- YooKassa SDK dependency prepared for future real payment integration
+- Vercel-ready static landing and serverless API endpoints
 
-- “Это демо-оплата для портфолио.”
-- “Payment flow работает в demo mode.”
-- “В демо доступны сценарии успешной и неуспешной оплаты.”
-- “Реальные деньги не списываются.”
+## Screenshots
 
-Кнопки demo-оплаты:
+Screenshots are stored in [`docs/screenshots`](docs/screenshots). Current expected files:
 
-- `✅ Демо: успешная оплата`;
-- `❌ Демо: неуспешная оплата`.
+- `client-menu.png`
+- `subscription-flow.png`
+- `mock-payment.png`
+- `admin-panel.png`
+- `admin-subscriptions.png`
+- `crm.png`
+- `excel-report.png`
+- `broadcasts.png`
 
-## Env variables
+Before public publication, make sure all screenshots contain only demo data and safe placeholders.
 
-Создайте `.env` на основе `.env.example`. Реальные токены, admin IDs, payment keys и private webhook URLs не должны попадать в GitHub.
+## Demo Limitations
 
-Минимум для demo-запуска:
+- Mock payment instead of real payment provider.
+- Demo data and local SQLite database.
+- Runtime SQLite on serverless hosting is suitable only for a portfolio preview.
+- Production hosting, payment confirmation, webhook reliability, database persistence, backups, monitoring, legal payment texts, and security hardening require additional setup.
+- This project is a commercial MVP demo, not a production-ready fitness CRM.
 
-```env
-BOT_TOKEN=your_demo_telegram_bot_token
-ADMIN_IDS=your_numeric_telegram_id
-TEST_MODE=true
-```
+## Environment Variables
 
-Полный пример:
+Create `.env` from `.env.example`. Do not commit real tokens, admin IDs, payment keys, private webhook URLs, local databases, or logs.
 
-```env
-BOT_TOKEN=your_demo_telegram_bot_token
-ADMIN_IDS=your_numeric_telegram_id
-TEST_MODE=true
+Required for local Telegram demo:
 
-YOOKASSA_SHOP_ID=
-YOOKASSA_SECRET_KEY=
+- `BOT_TOKEN` - demo Telegram bot token from BotFather.
+- `ADMIN_IDS` - comma-separated numeric Telegram user IDs with admin access.
+- `TEST_MODE` - keep `true` for portfolio mock payment mode.
 
-WEBHOOK_DOMAIN=https://your-demo-domain.example
-WEBHOOK_PATH=/telegram
-YOOKASSA_WEBHOOK_PATH=/webhook/yookassa
+Optional payment/webhook variables:
 
-PORT=3000
-NODE_ENV=development
+- `YOOKASSA_SHOP_ID` - required only when real YooKassa payments are enabled.
+- `YOOKASSA_SECRET_KEY` - required only when real YooKassa payments are enabled.
+- `WEBHOOK_DOMAIN` - production-like webhook domain for long-running server mode.
+- `WEBHOOK_PATH` - Telegram webhook path, default `/telegram`.
+- `YOOKASSA_WEBHOOK_PATH` - YooKassa webhook path, default `/webhook/yookassa`.
 
-DB_PATH=./data/bot.db
-SUBSCRIPTIONS_PATH=./config/subscriptions.json
-NOTIFIERS_PATH=./config/notifiers.json
+Runtime and demo content:
 
-CLUB_NAME=FitAdmin Demo Club
-CLUB_ADDRESS=Demo City, 10 Portfolio Street
-CLUB_PHONE=+7 000 000-00-00
-CLUB_HOURS=Пн-Пт 07:00-22:00, Сб-Вс 09:00-21:00
-```
+- `PORT` - local server port, default `3000`.
+- `NODE_ENV` - `development` for local polling, `production` for webhook mode.
+- `DB_PATH` - SQLite database path.
+- `SUBSCRIPTIONS_PATH` - membership catalog JSON path.
+- `NOTIFIERS_PATH` - notification recipients JSON path.
+- `CLUB_NAME`, `CLUB_ADDRESS`, `CLUB_PHONE`, `CLUB_HOURS` - safe demo club details shown in bot messages.
 
-Что означают основные переменные:
+## Local Setup
 
-- `BOT_TOKEN` — token demo-бота из BotFather.
-- `ADMIN_IDS` — numeric Telegram IDs администраторов через запятую.
-- `TEST_MODE=true` — включает mock payment flow и не требует YooKassa credentials.
-- `DB_PATH` — путь к локальной SQLite database.
-- `SUBSCRIPTIONS_PATH` — путь к JSON-файлу с demo-каталогом.
-- `NOTIFIERS_PATH` — путь к списку дополнительных получателей уведомлений.
-- `CLUB_*` — вымышленные demo-данные клуба для сообщений бота.
-
-## Local setup
-
-Установить зависимости:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Создать `.env`:
+Create local environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-На Windows PowerShell:
+Windows PowerShell:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Запустить dev mode:
+Start development mode:
 
 ```bash
 npm run dev
 ```
 
-На Windows PowerShell, если `npm.ps1` заблокирован script policy:
+On Windows PowerShell, if `npm.ps1` is blocked by script policy:
 
-```bash
+```powershell
 npm.cmd run dev
 ```
 
-Production-like start:
+Production-like local start:
 
 ```bash
 npm start
 ```
 
-## Checklist локальной проверки
+Fast health check when the server is running:
 
-- Отправить `/start` в Telegram-бот.
-- Проверить приветствие с брендом `FitAdmin Demo Club`.
-- Пройти регистрацию: ФИО, телефон, email.
-- Открыть каталог абонементов.
-- Выбрать абонемент.
-- Проверить successful demo payment.
-- Проверить failed demo payment.
-- Убедиться, что бот пишет: реальные деньги не списываются.
-- Открыть `/admin` с Telegram ID из `ADMIN_IDS`.
-- Проверить, что неадмин получает отказ в доступе.
-- Проверить список оплативших.
-- Проверить Excel-отчёт оплат.
-- Проверить broadcast flow.
-- Проверить управление demo-каталогом, если нужно показать admin tools.
-
-Если старый каталог уже был загружен в `data/bot.db`, новые demo-цены из `config/subscriptions.json` могут не появиться автоматически. Для чистого локального demo-теста используйте отдельную локальную demo database, не production data.
-
-## Deploy notes
-
-Проект подготовлен для portfolio preview на Vercel:
-
-- `/` показывает static landing из `public/index.html`;
-- `/api/healthz` возвращает health response;
-- `/api/telegram` подготовлен как Telegram webhook endpoint.
-
-Локально бот запускается в polling mode через `npm run dev`. На Vercel polling не используется: Telegram должен отправлять updates в webhook URL:
-
-```text
-https://your-vercel-domain.vercel.app/api/telegram
+```bash
+curl http://127.0.0.1:3000/healthz
 ```
 
-Для Vercel demo:
+## Validation Checklist
 
-1. Добавьте env variables в Vercel Project Settings.
-2. Используйте отдельный demo bot token, не production bot.
-3. Оставьте `TEST_MODE=true` для portfolio demo и mock payment flow.
-4. Подключите Telegram webhook вручную через Telegram Bot API на `/api/telegram`.
-5. Для production storage используйте внешнюю database/storage вместо runtime SQLite на Vercel.
-6. Для production нужны внешний database/storage, стабильный webhook delivery, мониторинг, backups и юридически проверенный payment flow.
+- [ ] Start bot.
+- [ ] Client registration works.
+- [ ] Catalog opens.
+- [ ] Mock successful payment works.
+- [ ] Mock failed payment works.
+- [ ] Admin panel opens for admin user.
+- [ ] Non-admin user is denied admin access.
+- [ ] Excel report generation works.
+- [ ] Broadcast flow works.
+- [ ] No secrets committed.
 
-На Vercel serverless endpoint `api/telegram.js` по умолчанию использует временные пути:
+## Deploy Notes
 
-```env
-DB_PATH=/tmp/bot.db
-NOTIFIERS_PATH=/tmp/notifiers.json
-SUBSCRIPTIONS_PATH=./config/subscriptions.json
-```
+The project includes a static landing and Vercel serverless endpoints:
 
-Это подходит для portfolio demo preview. Данные могут сбрасываться между cold starts/deploys, поэтому такой storage не позиционируется как production-ready.
+- `/` serves the portfolio landing from `public/index.html`.
+- `/api/healthz` returns a health response.
+- `/api/telegram` is prepared as a Telegram webhook endpoint.
 
-Также Vercel serverless endpoint работает как webhook handler, а не как long-running process. Ежедневный отчет через `node-cron` рассчитан на long-running запуск `src/index.js`, а не на serverless route.
+For Vercel demo deployment:
 
-Минимальные env variables для Vercel demo:
+1. Add safe demo env variables in Vercel Project Settings.
+2. Use a separate demo bot token, not a client production bot.
+3. Keep `TEST_MODE=true`.
+4. Configure Telegram webhook manually to `https://your-domain.vercel.app/api/telegram`.
+5. Use external persistent storage before positioning the project as production-ready.
 
-```env
-BOT_TOKEN=your_demo_telegram_bot_token
-ADMIN_IDS=your_numeric_telegram_id
-TEST_MODE=true
-CLUB_NAME=FitAdmin Demo Club
-CLUB_ADDRESS=Demo City, 10 Portfolio Street
-CLUB_PHONE=+7 000 000-00-00
-CLUB_HOURS=Пн-Пт 07:00-22:00, Сб-Вс 09:00-21:00
-```
+The daily report scheduler in `src/index.js` is intended for long-running Node.js mode, not serverless execution.
 
-`WEBHOOK_DOMAIN` и `WEBHOOK_PATH` нужны для long-running Node.js production-like запуска из `src/index.js`, но serverless endpoint на Vercel использует route `/api/telegram` из `vercel.json`.
+## Portfolio Value
 
-## Portfolio value
-
-Проект показывает потенциальному клиенту:
-
-- как быстро запустить Telegram MVP для продажи абонементов;
-- как собирать заявки без отдельного сайта или сложной CRM;
-- как показать каталог услуг прямо в Telegram;
-- как разделить client flow и admin flow;
-- как хранить пользователей, платежные записи и статусы платежей в базе;
-- как подготовить mock payment demo без реального списания денег;
-- как сделать простой Excel-отчёт оплат для менеджера;
-- как запускать рассылки по базе пользователей;
-- как подготовить архитектуру к будущим production integrations.
-
-## Адаптация под другие бизнесы
-
-Проект можно адаптировать под:
-
-- фитнес-клубы;
-- студии танцев;
-- йога-студии;
-- спортивные секции;
-- школы и курсы;
-- салоны;
-- локальные сервисные бизнесы с абонементами или пакетами услуг.
-
-Что обычно меняется:
-
-- бренд и тексты;
-- каталог услуг;
-- цены;
-- сценарий заявки;
-- admin recipients;
-- landing page;
-- будущая payment/database integration.
-
-## Screenshots
-
-Real Telegram screenshots are stored in `docs/screenshots`.
-
-Personal contact data in CRM/report/payment screenshots is redacted and replaced with demo placeholders before publication.
-
-Files:
-
-- `/docs/screenshots/client-menu.png`
-- `/docs/screenshots/subscription-flow.png`
-- `/docs/screenshots/mock-payment.png`
-- `/docs/screenshots/admin-panel.png`
-- `/docs/screenshots/admin-subscriptions.png`
-- `/docs/screenshots/crm.png`
-- `/docs/screenshots/excel-report.png`
-- `/docs/screenshots/broadcasts.png`
-
-## Security notes
-
-Не публикуйте в GitHub:
-
-- реальные Telegram bot tokens;
-- реальные admin IDs;
-- YooKassa / CloudPayments keys;
-- реальные данные клиентов;
-- реальные адреса и телефоны клуба;
-- private webhook URLs;
-- локальную SQLite database из папки `data`;
-- `.env`.
-
-Для GitHub используйте только `.env.example` с placeholder-значениями.
+This project demonstrates a Telegram bot MVP with real business scenarios: client registration, catalog selection, admin flow, reporting, demo payment states, broadcast tools, SQLite persistence, and clean client-ready packaging. It is useful as a portfolio case for fitness clubs, studios, schools, salons, and other local businesses that sell memberships or service packages.
