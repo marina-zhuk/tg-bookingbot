@@ -1,12 +1,14 @@
 {
   "name": "fitadmin-demo-club-bot",
   "version": "1.0.0",
-  "description": "Portfolio demo Telegram MVP for FitAdmin Demo Club subscriptions, mock payments, admin panel and Excel payment report",
+  "description": "Portfolio demo Telegram system for fitness clubs: subscriptions, mock payments, admin panel, broadcasts and Excel reports",
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "lint": "node scripts/check-js-syntax.js",
+    "test": "npm run lint && node scripts/smoke-test.js"
   },
   "dependencies": {
     "@a2seven/yoo-checkout": "^1.1.4",

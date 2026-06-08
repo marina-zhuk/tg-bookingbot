@@ -1,58 +1,79 @@
-# FitAdmin Bot Validation Checklist
+# Чеклист проверки FitAdmin Bot
 
-Use this checklist before showing the bot to a client or adding it to a portfolio.
+Используй этот чеклист перед тем, как показывать проект клиенту или добавлять его в портфолио.
 
-## Environment
+## Окружение
 
-- [ ] `.env` exists locally and is not committed.
-- [ ] `BOT_TOKEN` uses a demo bot token.
-- [ ] `ADMIN_IDS` contains only intended demo admin Telegram IDs.
-- [ ] `TEST_MODE=true`.
-- [ ] YooKassa keys are empty or demo-only.
-- [ ] `.env.example` contains only placeholders.
+- [ ] Локальный `.env` создан и не закоммичен.
+- [ ] `BOT_TOKEN` — demo token, а не токен клиентского production bot.
+- [ ] `ADMIN_IDS` содержит только нужные demo Telegram IDs.
+- [ ] `TEST_MODE=true` для portfolio demo.
+- [ ] YooKassa keys пустые или demo-only, если реальные платежи не тестируются.
+- [ ] `.env.example` содержит только placeholders.
 
-## Local Start
+## Автоматические проверки
 
-- [ ] Run `npm install`.
-- [ ] Run `npm run dev` or `npm.cmd run dev` on Windows PowerShell.
-- [ ] Server starts without missing env errors.
-- [ ] Health endpoint responds: `http://127.0.0.1:3000/healthz`.
+- [ ] Запустить `npm run lint`.
+- [ ] Запустить `npm test`.
+- [ ] Проверить, что JS syntax check проходит.
+- [ ] Проверить, что smoke-test миграций проходит.
+- [ ] Проверить, что каталог абонементов загружается.
+- [ ] Проверить, что Express health server создаётся без реальных Telegram API calls.
 
-## Client Flow
+## Локальный запуск
 
-- [ ] Send `/start` to the bot.
-- [ ] Registration asks for full name.
-- [ ] Phone validation accepts a valid demo phone.
-- [ ] Email validation accepts a valid demo email.
-- [ ] Main menu opens after registration.
-- [ ] Membership catalog opens.
-- [ ] Single visit opens.
-- [ ] Special offers open.
-- [ ] Selecting a plan opens the payment screen.
+- [ ] Выполнить `npm install` или `npm ci`.
+- [ ] Запустить `npm run dev` или `npm.cmd run dev` в Windows PowerShell.
+- [ ] Сервер стартует без missing env errors.
+- [ ] Health endpoint отвечает: `http://127.0.0.1:3000/healthz`.
 
-## Mock Payment Flow
+## Клиентский сценарий
 
-- [ ] Payment screen clearly says this is demo/mock payment.
-- [ ] Successful mock payment creates a succeeded payment record.
-- [ ] Failed mock payment creates a canceled payment record.
-- [ ] Bot confirms that real money is not charged.
+- [ ] Отправить `/start` в demo bot.
+- [ ] Бот запрашивает ФИО.
+- [ ] Валидация телефона принимает корректный demo phone.
+- [ ] Валидация email принимает корректный demo email.
+- [ ] После регистрации открывается главное меню.
+- [ ] Открывается каталог абонементов.
+- [ ] Открывается разовое посещение.
+- [ ] Открываются спецпредложения.
+- [ ] Выбор плана открывает payment screen.
 
-## Admin Flow
+## Mock payment flow
 
-- [ ] `/admin` opens for an ID listed in `ADMIN_IDS`.
-- [ ] `/admin` is blocked for non-admin users.
-- [ ] Paid clients list opens.
-- [ ] Excel report is generated and sent.
-- [ ] Broadcast preview opens.
-- [ ] Broadcast can be confirmed or canceled.
-- [ ] `/admins` notification recipients flow works.
-- [ ] Catalog management opens from admin panel.
-- [ ] Price/edit/visibility actions work on demo catalog items.
+- [ ] Payment screen явно говорит, что это demo/mock payment.
+- [ ] Успешная demo-оплата создаёт succeeded payment record.
+- [ ] Неуспешная demo-оплата создаёт canceled payment record.
+- [ ] Бот явно сообщает, что реальные деньги не списываются.
 
-## Public Packaging
+## Admin flow
 
-- [ ] README has demo links or clear placeholders.
-- [ ] Screenshots in `docs/screenshots` use safe demo data.
-- [ ] Landing page links are updated before publication.
-- [ ] No real phone numbers, emails, tokens, admin IDs, private URLs, or database files are committed.
-- [ ] `git check-ignore -v .env data/bot.db logs/app.log .vercel` confirms local sensitive files are ignored.
+- [ ] `/admin` открывается для ID из `ADMIN_IDS`.
+- [ ] `/admin` заблокирован для non-admin user.
+- [ ] Открывается список оплативших клиентов.
+- [ ] Excel report генерируется и отправляется.
+- [ ] Broadcast preview открывается.
+- [ ] Broadcast можно подтвердить или отменить.
+- [ ] `/admins` flow для получателей уведомлений работает.
+- [ ] Catalog management открывается из admin panel.
+- [ ] Изменение цены/видимости/demo catalog items работает.
+
+## Портфолио-упаковка
+
+- [ ] README понятен русскоязычному клиенту.
+- [ ] README явно говорит, что это portfolio demo/adaptable service example.
+- [ ] Live demo link работает.
+- [ ] Telegram demo bot link работает.
+- [ ] Screenshots используют безопасные demo data.
+- [ ] GitHub repository имеет понятное русское описание.
+- [ ] В репозитории нет реальных телефонов, email, tokens, admin IDs, private URLs, database files или logs.
+- [ ] `git check-ignore -v .env data/bot.db logs/app.log .vercel` подтверждает, что sensitive local files игнорируются.
+
+## Перед production adaptation
+
+- [ ] Заменить demo branding, prices, screenshots и copy.
+- [ ] Решить, нужны ли реальные payments.
+- [ ] Если payments нужны — подключить provider и legal texts.
+- [ ] Заменить serverless/runtime SQLite на persistent database или VPS storage.
+- [ ] Добавить backups, monitoring и operational logging.
+- [ ] Провести security review для персональных данных и admin access.
