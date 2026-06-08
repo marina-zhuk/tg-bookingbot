@@ -1,130 +1,195 @@
 # FitAdmin Bot
 
-Portfolio demo Telegram MVP for a fictional fitness club, built to show how a local fitness business can sell memberships, collect client data, run admin actions, and export reports directly through Telegram.
+**FitAdmin Bot** — портфолио-пример Telegram-системы для фитнес-клуба, студии или тренера: регистрация клиента, каталог абонементов, demo payment flow, admin panel, рассылки и Excel-отчёты.
 
-Built as an AI-assisted commercial MVP. I handled product logic, scenario design, setup, testing, integration flow, debugging and portfolio packaging.
+Это **не готовая коробка “купил и забрал”**. Это витринный проект: пример того, какую Telegram-автоматизацию можно сделать под конкретный бизнес — с его услугами, ценами, дизайном, оплатами, базой и правилами работы.
 
-## Live Demo
+## Ссылки
 
+- Live landing/demo page: https://tg-bookingbot-gravity.vercel.app
 - Telegram demo bot: https://t.me/FitAdmin2_bot
-- Landing/demo page: https://tg-bookingbot-gravity.vercel.app
+- GitHub repository: https://github.com/marina-zhuk/tg-bookingbot
 
-## Business Problem
+## Позиционирование
 
-Fitness clubs often lose leads and purchase requests inside chats. Administrators repeat the same answers, manually collect contact details, and do not have a simple place to track who selected a membership, who completed payment, and who should receive follow-up messages.
+**Что показывает проект:**
 
-FitAdmin Bot demonstrates a compact MVP for fixing that flow: the client can register, choose a service, and pass through a demo payment scenario, while the administrator can view paid clients, manage the catalog, send broadcasts, and export an Excel report.
+> “Я могу сделать для вашего фитнес-клуба, студии, тренера или локального сервиса Telegram-систему, где клиент выбирает услугу, оставляет данные, проходит оплату/демо-оплату, а администратор управляет заявками, абонементами, рассылками и отчётами.”
 
-## What It Does
+Проект можно адаптировать под:
 
-- Client registration through `/start`.
-- Membership and service catalog.
-- Mock payment flow with successful and failed demo outcomes.
-- Admin panel through `/admin`.
-- Catalog management for memberships, prices, visibility, and special offers.
-- Excel/XLSX report for paid clients.
-- Broadcast flow for users who opened the bot.
-- SQLite storage for users, visitors, payments, catalog data, and admin change history.
+- фитнес-клуб;
+- йога/пилатес студию;
+- танцевальную школу;
+- массажный/beauty-кабинет;
+- спортивную секцию;
+- тренера или эксперта с пакетами занятий;
+- любой локальный бизнес с абонементами, услугами и повторными клиентами.
 
-## Client Flow
+## Простая схема работы
 
-1. Client opens the Telegram bot and sends `/start`.
-2. Bot registers the client: full name, phone, and email.
-3. Client opens the catalog.
-4. Client chooses a membership, single visit, or special offer.
-5. Bot shows the selected item and price.
-6. Client enters the mock payment flow.
-7. Client can test successful payment or failed payment.
-8. Bot stores the payment status and shows next-step club information.
+```text
+Клиент в Telegram
+  → регистрация
+  → каталог абонементов / услуг
+  → demo payment flow
+  → статус покупки
+  → данные сохраняются в базе
+  → администратор видит клиента, оплату и отчёт
+```
 
-## Admin Flow
+## Что умеет MVP
 
-1. Admin opens `/admin`.
-2. Bot checks access through `ADMIN_IDS`.
-3. Admin can view paid clients.
-4. Admin can export an Excel payment report.
-5. Admin can start and confirm a broadcast.
-6. Admin can manage notification recipients through `/admins`.
-7. Admin can manage memberships, prices, visibility, special offers, and view change history.
+### Клиентская часть
 
-## Mock Payment Flow
+- Запуск через `/start`.
+- Регистрация клиента: ФИО, телефон, email.
+- Главное меню внутри Telegram.
+- Каталог абонементов, разовых посещений и спецпредложений.
+- Выбор услуги/абонемента.
+- Demo/mock payment flow: успешная и неуспешная оплата без списания денег.
+- Сообщение с дальнейшими шагами после успешной demo-оплаты.
 
-В демо-версии реализован mock payment flow: успешная и неуспешная оплата без подключения реального платёжного провайдера. Для production можно подключить YouKassa, CloudPayments или другой сервис.
+### Админская часть
 
-The demo flow does not charge real money. `TEST_MODE=true` keeps the bot in safe portfolio mode and shows fake payment buttons instead of creating a real YooKassa payment.
+- Команда `/admin` для владельца/администратора.
+- Проверка доступа через `ADMIN_IDS`.
+- Список оплативших клиентов.
+- Excel/XLSX-отчёт по оплатам.
+- Рассылка пользователям, которые открывали бота.
+- Управление получателями уведомлений.
+- Управление абонементами: цена, видимость, добавление, удаление.
+- Управление спецпредложениями.
+- История изменений по каталогу.
 
-## Tech Stack
+## Demo mode и production adaptation
+
+### Что уже работает как portfolio demo
+
+- Telegram-сценарии клиента и администратора.
+- Каталог абонементов и спецпредложений.
+- Demo payment flow без реального списания денег.
+- SQLite-хранилище для demo/MVP-логики.
+- Landing page на Vercel.
+- Webhook endpoints для демонстрационного деплоя.
+- Скриншоты с безопасными demo-данными.
+
+### Что подключается отдельно для реального клиента
+
+- Реальная оплата: YouKassa, CloudPayments или другой provider.
+- Production database: PostgreSQL/Supabase/Neon или стабильное VPS-хранилище.
+- Надёжный webhook hosting.
+- Бэкапы, мониторинг, логи и алерты.
+- Юридические тексты по оплате, возвратам и персональным данным.
+- Брендинг, реальные услуги, цены, оффер и тексты клиента.
+- Роли сотрудников, если у клиента несколько администраторов.
+
+## Важно про Node 22, SQLite и Vercel
+
+Проект использует `node:sqlite`, поэтому в `package.json` указано:
+
+```json
+"engines": {
+  "node": ">=22.0.0"
+}
+```
+
+Для **portfolio demo** это нормально: локально и на совместимом окружении Node 22 проект запускается, а Vercel используется как витрина/демо-страница и serverless preview.
+
+Для **боевого клиентского проекта** я бы не позиционировал Vercel + runtime SQLite как production-базу. Правильнее вынести данные в PostgreSQL/Supabase/Neon или держать бота на VPS с persistent storage, бэкапами и мониторингом.
+
+## Документация
+
+- [Project overview](docs/PROJECT_OVERVIEW.md) — русское описание проекта, аудитории, demo/production границ и инфраструктуры.
+- [Portfolio case](docs/PORTFOLIO_CASE.md) — коммерческая упаковка кейса и варианты адаптации под клиента.
+- [Validation checklist](docs/VALIDATION_CHECKLIST.md) — что проверить перед показом или production adaptation.
+- [Screenshots](docs/screenshots) — proof-скриншоты с demo data.
+
+## Скриншоты / proof
+
+Скриншоты хранятся в [`docs/screenshots`](docs/screenshots):
+
+- `client-menu.png` — главное меню клиента.
+- `subscription-flow.png` — выбор абонемента.
+- `mock-payment.png` — demo payment flow.
+- `admin-panel.png` — панель администратора.
+- `admin-subscriptions.png` — управление абонементами.
+- `broadcasts.png` — рассылки.
+- `crm.png` — CRM/список клиентов.
+- `excel-report.png` — Excel-отчёт.
+
+Перед публичным показом важно: не использовать реальные телефоны, email, токены, ID администраторов, webhook URLs и приватные ссылки.
+
+## Коммерческая ценность
+
+Для владельца клуба/студии такая система помогает:
+
+- не терять заявки в чатах;
+- быстро показывать услуги и абонементы;
+- собирать контактные данные клиента;
+- демонстрировать оплату или подключить реальную оплату;
+- вести простую базу клиентов;
+- делать рассылки по пользователям бота;
+- выгружать отчёты для администратора;
+- сократить ручную работу по повторяющимся вопросам.
+
+## Примеры адаптации под клиента
+
+**Базовая адаптация:**
+
+- заменить бренд, услуги, цены и тексты;
+- настроить Telegram-бота клиента;
+- подключить владельца/администратора;
+- оставить demo payment или убрать оплату.
+
+**Расширенная адаптация:**
+
+- подключить реальную оплату;
+- добавить расписание/запись по слотам;
+- добавить разные роли сотрудников;
+- подключить CRM/API/Google Sheets;
+- добавить напоминания клиентам;
+- добавить аналитику заявок и оплат.
+
+## Технологии
 
 - Node.js CommonJS
 - Telegraf
 - Telegram Bot API
 - Express
-- SQLite through `node:sqlite`
+- SQLite через `node:sqlite`
 - `dotenv`
 - `exceljs`
 - `node-cron`
-- YooKassa SDK dependency prepared for future real payment integration
-- Vercel-ready static landing and serverless API endpoints
+- YooKassa SDK dependency для будущего production payment flow
+- Vercel static landing + serverless API endpoints
 
-## Screenshots
+## Качество и проверки
 
-Screenshots are stored in [`docs/screenshots`](docs/screenshots). Current expected files:
+Доступные команды:
 
-- `client-menu.png`
-- `subscription-flow.png`
-- `mock-payment.png`
-- `admin-panel.png`
-- `admin-subscriptions.png`
-- `crm.png`
-- `excel-report.png`
-- `broadcasts.png`
+```bash
+npm run lint
+npm test
+```
 
-Before public publication, make sure all screenshots contain only demo data and safe placeholders.
+Что проверяется:
 
-## Demo Limitations
+- синтаксис всех JS-файлов через `node --check`;
+- smoke-test миграций базы;
+- загрузка каталога абонементов;
+- загрузка спецпредложений;
+- базовая health-проверка Express-приложения без реального Telegram token.
 
-- Mock payment instead of real payment provider.
-- Demo data and local SQLite database.
-- Runtime SQLite on serverless hosting is suitable only for a portfolio preview.
-- Production hosting, payment confirmation, webhook reliability, database persistence, backups, monitoring, legal payment texts, and security hardening require additional setup.
-- This project is a commercial MVP demo, not a production-ready fitness CRM.
+## Локальный запуск
 
-## Environment Variables
-
-Create `.env` from `.env.example`. Do not commit real tokens, admin IDs, payment keys, private webhook URLs, local databases, or logs.
-
-Required for local Telegram demo:
-
-- `BOT_TOKEN` - demo Telegram bot token from BotFather.
-- `ADMIN_IDS` - comma-separated numeric Telegram user IDs with admin access.
-- `TEST_MODE` - keep `true` for portfolio mock payment mode.
-
-Optional payment/webhook variables:
-
-- `YOOKASSA_SHOP_ID` - required only when real YooKassa payments are enabled.
-- `YOOKASSA_SECRET_KEY` - required only when real YooKassa payments are enabled.
-- `WEBHOOK_DOMAIN` - production-like webhook domain for long-running server mode.
-- `WEBHOOK_PATH` - Telegram webhook path, default `/telegram`.
-- `YOOKASSA_WEBHOOK_PATH` - YooKassa webhook path, default `/webhook/yookassa`.
-
-Runtime and demo content:
-
-- `PORT` - local server port, default `3000`.
-- `NODE_ENV` - `development` for local polling, `production` for webhook mode.
-- `DB_PATH` - SQLite database path.
-- `SUBSCRIPTIONS_PATH` - membership catalog JSON path.
-- `NOTIFIERS_PATH` - notification recipients JSON path.
-- `CLUB_NAME`, `CLUB_ADDRESS`, `CLUB_PHONE`, `CLUB_HOURS` - safe demo club details shown in bot messages.
-
-## Local Setup
-
-Install dependencies:
+Установить зависимости:
 
 ```bash
 npm install
 ```
 
-Create local environment file:
+Создать `.env`:
 
 ```bash
 cp .env.example .env
@@ -136,16 +201,10 @@ Windows PowerShell:
 Copy-Item .env.example .env
 ```
 
-Start development mode:
+Запустить development mode:
 
 ```bash
 npm run dev
-```
-
-On Windows PowerShell, if `npm.ps1` is blocked by script policy:
-
-```powershell
-npm.cmd run dev
 ```
 
 Production-like local start:
@@ -154,43 +213,33 @@ Production-like local start:
 npm start
 ```
 
-Fast health check when the server is running:
+Health check при запущенном сервере:
 
 ```bash
 curl http://127.0.0.1:3000/healthz
 ```
 
-## Validation Checklist
+## Environment variables
 
-- [ ] Start bot.
-- [ ] Client registration works.
-- [ ] Catalog opens.
-- [ ] Mock successful payment works.
-- [ ] Mock failed payment works.
-- [ ] Admin panel opens for admin user.
-- [ ] Non-admin user is denied admin access.
-- [ ] Excel report generation works.
-- [ ] Broadcast flow works.
-- [ ] No secrets committed.
+Основные переменные:
 
-## Deploy Notes
+- `BOT_TOKEN` — demo Telegram bot token.
+- `ADMIN_IDS` — Telegram ID администраторов.
+- `TEST_MODE=true` — безопасный demo payment mode.
+- `YOOKASSA_SHOP_ID` / `YOOKASSA_SECRET_KEY` — нужны только для реальных платежей.
+- `WEBHOOK_DOMAIN` / `WEBHOOK_PATH` — нужны для webhook-режима.
+- `DB_PATH` — путь к SQLite базе.
+- `CLUB_NAME`, `CLUB_ADDRESS`, `CLUB_PHONE`, `CLUB_HOURS` — demo-информация клуба.
 
-The project includes a static landing and Vercel serverless endpoints:
+Реальные токены, admin IDs, payment keys, webhook URLs, базы и логи нельзя коммитить.
 
-- `/` serves the portfolio landing from `public/index.html`.
-- `/api/healthz` returns a health response.
-- `/api/telegram` is prepared as a Telegram webhook endpoint.
+## Ограничения demo-проекта
 
-For Vercel demo deployment:
+- Это portfolio MVP, а не production CRM.
+- Реальные платежи не включены в demo mode.
+- Runtime SQLite на serverless подходит только для демонстрации.
+- Для реального клиента нужны persistent database, security review, backups, monitoring и юридические тексты.
 
-1. Add safe demo env variables in Vercel Project Settings.
-2. Use a separate demo bot token, not a client production bot.
-3. Keep `TEST_MODE=true`.
-4. Configure Telegram webhook manually to `https://your-domain.vercel.app/api/telegram`.
-5. Use external persistent storage before positioning the project as production-ready.
+## Итог
 
-The daily report scheduler in `src/index.js` is intended for long-running Node.js mode, not serverless execution.
-
-## Portfolio Value
-
-This project demonstrates a Telegram bot MVP with real business scenarios: client registration, catalog selection, admin flow, reporting, demo payment states, broadcast tools, SQLite persistence, and clean client-ready packaging. It is useful as a portfolio case for fitness clubs, studios, schools, salons, and other local businesses that sell memberships or service packages.
+FitAdmin Bot — сильный portfolio case для Telegram business automation. Он показывает не только “бота с кнопками”, а полноценный бизнес-сценарий: клиент выбирает абонемент, проходит demo payment, а администратор управляет каталогом, клиентами, рассылками и отчётами.

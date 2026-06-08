@@ -1,50 +1,78 @@
 # FitAdmin Bot Project Overview
 
-## Goal
+## Короткое описание
 
-FitAdmin Bot is a portfolio/commercial MVP demo for a fitness club Telegram bot. The goal is to show a compact business flow: registration, catalog selection, mock payment, admin management, reporting, and broadcasts.
+FitAdmin Bot — portfolio MVP Telegram-системы для фитнес-клуба, студии или тренера. Проект показывает, как бизнес может принимать клиентов в Telegram, показывать каталог абонементов, проводить demo payment flow, управлять заявками/оплатами и выгружать отчёты.
 
-## Users
+Это витринный проект: он демонстрирует, **что можно разработать под конкретный бизнес**, а не продаётся как неизменная готовая коробка.
 
-The client user is a potential club member who opens the bot, registers, views memberships or services, and tests a safe mock payment scenario.
+## Для кого подходит
 
-The administrator is a club manager with a Telegram ID listed in `ADMIN_IDS`. The admin can open the admin panel, view paid clients, export an Excel report, run broadcasts, manage notification recipients, and update catalog items.
+- фитнес-клуб;
+- йога/пилатес студия;
+- танцевальная школа;
+- тренер с пакетами занятий;
+- спортивная секция;
+- beauty/массажный кабинет с абонементами;
+- локальный сервис, где есть повторные клиенты, пакеты услуг и администратор.
 
-## Business Tasks Covered
+## Пользователи системы
 
-- Capture client contact data.
-- Present membership and service options.
-- Demonstrate successful and failed payment outcomes without charging money.
-- Store users, visitors, payments, catalog data, and admin changes in SQLite.
-- Give the admin a practical Telegram-based control panel.
-- Export paid-client data to Excel.
-- Send broadcasts to users who opened the bot.
+### Клиент
 
-## Demo vs Production-Ready
+Клиент открывает Telegram-бота, регистрируется, выбирает абонемент или услугу, проходит demo payment flow и получает дальнейшие инструкции.
 
-Demo parts:
+### Администратор
+
+Администратор открывает `/admin`, видит оплаченных клиентов, выгружает Excel-отчёт, запускает рассылки, управляет абонементами, ценами, спецпредложениями и получателями уведомлений.
+
+## Бизнес-задачи
+
+- Собрать контактные данные клиента.
+- Показать абонементы, разовые посещения и спецпредложения.
+- Продемонстрировать сценарий оплаты без реального списания денег.
+- Сохранить пользователей, посетителей, платежи, каталог и историю изменений.
+- Дать владельцу простую админ-панель прямо в Telegram.
+- Выгрузить данные по оплатам в Excel.
+- Запускать рассылки по пользователям бота.
+
+## Demo vs production
+
+### Demo-части
 
 - Mock payment flow.
 - Demo club data.
-- Local SQLite storage.
-- Portfolio screenshots and landing content.
-- Vercel preview/serverless setup for demonstration.
+- SQLite storage для MVP-логики.
+- Portfolio screenshots и landing page.
+- Vercel preview/serverless setup для демонстрации.
 
-Production-ready foundations:
+### Production-ready foundation
 
-- Clear client and admin scenarios.
+- Разделение клиентских и админских сценариев.
 - Env-based secrets handling.
-- Admin access through `ADMIN_IDS`.
-- Structured SQLite schema.
-- Catalog and report services.
-- Safe separation of demo payment mode through `TEST_MODE`.
+- Admin access через `ADMIN_IDS`.
+- Структурированная SQLite schema.
+- Каталог, отчёты, рассылки и история изменений.
+- Безопасный `TEST_MODE=true` для demo payment.
 
-## Needed Before Real Client Use
+### Что нужно перед реальным клиентским запуском
 
-- Connect and fully test a real payment provider such as YouKassa or CloudPayments.
-- Use persistent production database/storage.
-- Configure reliable webhook hosting.
-- Add monitoring, backups, and operational logging.
-- Review legal/payment texts with the client.
-- Add proper security review for production data.
-- Replace demo branding, prices, screenshots, and links with real client materials.
+- Подключить и протестировать реальный payment provider: YouKassa, CloudPayments или другой сервис.
+- Перенести данные в production database: PostgreSQL/Supabase/Neon или VPS storage.
+- Настроить надёжный webhook hosting.
+- Добавить monitoring, backups и operational logging.
+- Проверить юридические тексты: оплата, возвраты, персональные данные.
+- Заменить demo branding, prices, screenshots и links на материалы клиента.
+- Провести security review перед хранением реальных клиентских данных.
+
+## Node 22 / SQLite / Vercel
+
+Проект использует `node:sqlite`, поэтому требуется Node.js `>=22.0.0`.
+
+Для portfolio demo это приемлемо: проект можно проверить локально, а Vercel использовать как landing/demo preview.
+
+Для production лучше не полагаться на runtime SQLite в serverless-среде. Реальный клиентский проект должен использовать persistent database или VPS с бэкапами и мониторингом.
+
+## Итоговая ценность
+
+Проект демонстрирует способность собрать Telegram business automation: не только клиентское меню, но и admin flow, каталог, demo payment, рассылки, отчёты и storage. Это хороший reusable case для продажи похожих решений под малый бизнес.
