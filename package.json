@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "node scripts/check-js-syntax.js",
-    "test": "npm run lint && node scripts/smoke-test.js"
+    "test": "npm run lint && node scripts/smoke-test.js",
+    "build": "npm run lint"
   },
   "dependencies": {
     "@a2seven/yoo-checkout": "^1.1.4",
